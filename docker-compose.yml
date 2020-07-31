@@ -5,7 +5,7 @@ services:
     image: mongo:3-xenial
     container_name: mongodb
     volumes:
-      - /mongodb/init-db.js:/docker-entrypoint-initdb.d/init-db.js
+      - ./mongodb/init-db.js:/docker-entrypoint-initdb.d/init-db.js
     expose:
       - "27017"
     networks:
@@ -16,8 +16,10 @@ services:
       context: ./category
     image: category:latest
     container_name: category
-    depends_on: mongodb
-    links: mongodb
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     expose:
       - "8081"
     networks:
@@ -26,11 +28,13 @@ services:
   product:
     build: 
       context: ./product
-      dockerfile: /product/src/main/docker/Dockerfile.jvm
+      dockerfile: src/main/docker/Dockerfile.jvm
     image: product:latest
     container_name: product
-    depends_on: mongodb
-    links: mongodb
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     expose:
       - "8080"
     networks:
@@ -39,7 +43,7 @@ services:
   integration:
     build:
       context: ./integration
-      dockerfile: /integration/src/main/docker/Dockerfile.jvm
+      dockerfile: src/main/docker/Dockerfile.jvm
     image: integration:latest
     container_name: integration    
     ports:
@@ -53,3 +57,13 @@ services:
     networks:
       - integration_category
       - integration_product
+
+networks:
+  product:
+    driver: bridge
+  category:
+    driver: bridge
+  integration_product:
+    driver: bridge
+  integration_category:
+    driver: bridge

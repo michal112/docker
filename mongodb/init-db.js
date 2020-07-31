@@ -1,4 +1,3 @@
-use category
 db.createCollection("category")
 db.category.insert(
   [
@@ -12,7 +11,6 @@ db.category.insert(
     }
   ]
 )
-use product
 db.createCollection("product")
 db.product.insert(
   [

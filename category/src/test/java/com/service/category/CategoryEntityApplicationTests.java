@@ -9,5 +9,4 @@ class CategoryEntityApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

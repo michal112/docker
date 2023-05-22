@@ -2,12 +2,13 @@ package com.service.category.service;
 
 import com.service.category.exception.EntityNotFoundException;
 import com.service.category.model.entity.CategoryEntity;
+import com.service.category.model.entity.SectionEntity;
 import com.service.category.model.mapper.CategoryMapper;
 import com.service.category.model.mapper.PublicIdGenerator;
 import com.service.category.model.payload.CategoryPayload;
 import com.service.category.model.repository.CategoryReactiveRepository;
+import com.service.category.model.repository.SectionReactiveRepository;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.description.Description;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.Example;
 import org.springframework.data.util.Pair;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,7 +30,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -51,9 +54,19 @@ public class CategoryServiceTest {
             .name(NEW_NAME)
             .publicId(PUBLIC_ID)
             .build();
+    private static final SectionEntity SECTION = SectionEntity.builder()
+            .name("SECTION")
+            .categories(new HashSet<>(Set.of(PUBLIC_ID)))
+            .build();
+    private static final SectionEntity SECTION_WITHOUT_CATEGORIES = SectionEntity.builder()
+            .name("SECTION")
+            .build();
 
     @TestConfiguration
     static class ContextConfiguration {
+
+        @MockBean
+        SectionReactiveRepository sectionReactiveRepository;
 
         @Bean
         CategoryReactiveRepository categoryReactiveRepository() {
@@ -75,10 +88,14 @@ public class CategoryServiceTest {
         }
 
         @Bean
-        CategoryService categoryService(CategoryMapper categoryMapper, CategoryReactiveRepository categoryReactiveRepository) {
-            return new CategoryService(categoryMapper, categoryReactiveRepository);
+        CategoryService categoryService(CategoryMapper categoryMapper, CategoryReactiveRepository categoryReactiveRepository,
+                                        SectionReactiveRepository sectionReactiveRepository) {
+            return new CategoryService(categoryMapper, categoryReactiveRepository, sectionReactiveRepository);
         }
     }
+
+    @Autowired
+    SectionReactiveRepository sectionReactiveRepository;
 
     @Autowired
     CategoryReactiveRepository categoryReactiveRepository;
@@ -134,21 +151,15 @@ public class CategoryServiceTest {
         var expectedPayload = data.getSecond();
 
         var entityCaptor = ArgumentCaptor.forClass(CategoryEntity.class);
-        var exampleCaptor = ArgumentCaptor.forClass(Example.class);
 
-        when(categoryReactiveRepository.findOne(any())).thenReturn(Mono.just(CATEGORY_ENTITY));
+        when(categoryReactiveRepository.findByPublicId(any())).thenReturn(Mono.just(CATEGORY_ENTITY));
         when(categoryReactiveRepository.deleteById(any(BigInteger.class))).thenReturn(Mono.empty());
         //when
         //then
         StepVerifier.create(categoryService.update(givenPayload, givenPublicId))
                 .expectNext(expectedPayload)
                 .verifyComplete();
-        verify(categoryReactiveRepository, times(1)).findOne(exampleCaptor.capture());
-        Assertions.assertThat(exampleCaptor.getValue()).usingRecursiveComparison()
-                .ignoringActualNullFields()
-                .isEqualTo(Example.of(CategoryEntity.builder()
-                        .publicId(givenPublicId)
-                        .build()));
+        verify(categoryReactiveRepository, times(1)).findByPublicId(eq(CATEGORY_ENTITY.getPublicId()));
         verify(categoryReactiveRepository, times(1)).deleteById(eq(CATEGORY_ENTITY.getId()));
         verify(categoryReactiveRepository, times(1)).save(entityCaptor.capture());
         Assertions.assertThat(entityCaptor.getValue()).usingRecursiveComparison()
@@ -159,7 +170,7 @@ public class CategoryServiceTest {
     @DisplayName("category service update() exception test")
     void updateExceptionTest() {
         //given
-        when(categoryReactiveRepository.findOne(any())).thenReturn(Mono.empty());
+        when(categoryReactiveRepository.findByPublicId(any())).thenReturn(Mono.empty());
         //when
         //then
         Assertions.assertThatExceptionOfType(EntityNotFoundException.class)
@@ -182,27 +193,20 @@ public class CategoryServiceTest {
         var givenPublicId = data.getFirst();
         var expectedPayload = data.getSecond();
 
-        var exampleCaptor = ArgumentCaptor.forClass(Example.class);
-
-        when(categoryReactiveRepository.findOne(any())).thenReturn(Mono.just(CATEGORY_ENTITY));
+        when(categoryReactiveRepository.findByPublicId(any())).thenReturn(Mono.just(CATEGORY_ENTITY));
         //when
         //then
         StepVerifier.create(categoryService.getByPublicId(givenPublicId))
                 .expectNext(expectedPayload)
                 .verifyComplete();
-        verify(categoryReactiveRepository, times(1)).findOne(exampleCaptor.capture());
-        Assertions.assertThat(exampleCaptor.getValue()).usingRecursiveComparison()
-                .ignoringActualNullFields()
-                .isEqualTo(Example.of(CategoryEntity.builder()
-                        .publicId(givenPublicId)
-                        .build()));
+        verify(categoryReactiveRepository, times(1)).findByPublicId(eq(CATEGORY_ENTITY.getPublicId()));
     }
 
     @Test
     @DisplayName("category service getByPublicId() exception test")
     void getByPublicIdExceptionTest() {
         //given
-        when(categoryReactiveRepository.findOne(any())).thenReturn(Mono.empty());
+        when(categoryReactiveRepository.findByPublicId(any())).thenReturn(Mono.empty());
         //when
         //then
         Assertions.assertThatExceptionOfType(EntityNotFoundException.class)
@@ -228,6 +232,7 @@ public class CategoryServiceTest {
         StepVerifier.create(categoryService.getAll())
                 .expectNextSequence(expectedPayloadList)
                 .verifyComplete();
+        verify(categoryReactiveRepository, times(1)).findAll();
     }
 
     @Test
@@ -235,14 +240,22 @@ public class CategoryServiceTest {
     void deleteTest() {
         //given
         when(categoryReactiveRepository.deleteByPublicId(anyString())).thenReturn(Mono.empty());
+        when(sectionReactiveRepository.findByCategoriesContaining(anyString())).thenReturn(Flux.just(SECTION));
+
+        var entityCaptor = ArgumentCaptor.forClass(SectionEntity.class);
         //when
         categoryService.delete(PUBLIC_ID);
         //then
         verify(categoryReactiveRepository, times(1)).deleteByPublicId(eq(PUBLIC_ID));
+        verify(sectionReactiveRepository, times(1)).findByCategoriesContaining(eq(PUBLIC_ID));
+        verify(sectionReactiveRepository, times(1)).save(entityCaptor.capture());
+        Assertions.assertThat(entityCaptor.getValue()).usingRecursiveComparison()
+                .ignoringActualNullFields()
+                .isEqualTo(SECTION_WITHOUT_CATEGORIES);
     }
 
     @AfterEach
     void after() {
-        Mockito.clearInvocations(categoryReactiveRepository);
+        Mockito.clearInvocations(categoryReactiveRepository, sectionReactiveRepository);
     }
 }

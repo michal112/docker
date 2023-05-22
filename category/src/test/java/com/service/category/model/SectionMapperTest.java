@@ -21,7 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
@@ -65,25 +65,27 @@ public class SectionMapperTest {
     @Autowired
     SectionMapper sectionMapper;
 
-    public static Stream<Pair<SectionEntity, SectionPayload>> toPayloadTestSource() {
+    public static Stream<Pair<Pair<SectionEntity, List<CategoryEntity>>, SectionPayload>> toPayloadTestSource() {
         return Stream.of(
-                Pair.of(SectionEntity.builder()
-                        .publicId(PUBLIC_ID)
-                        .name(NAME)
-                        .categories(Set.of(CATEGORY_ENTITY))
-                        .build(), new SectionPayload(PUBLIC_ID, NAME, Set.of(CATEGORY_PAYLOAD)))
+                Pair.of(
+                        Pair.of(SectionEntity.builder()
+                                .publicId(PUBLIC_ID)
+                                .name(NAME)
+                                .build(), List.of(CATEGORY_ENTITY)),
+                        new SectionPayload(PUBLIC_ID, NAME, List.of(CATEGORY_PAYLOAD)))
         );
     }
 
     @ParameterizedTest
     @DisplayName("section mapper toPayload() test")
     @MethodSource("toPayloadTestSource")
-    void toPayloadTest(Pair<SectionEntity, SectionPayload> data) {
+    void toPayloadTest(Pair<Pair<SectionEntity, List<CategoryEntity>>, SectionPayload> data) {
         //given
-        var givenEntity = data.getFirst();
+        var givenEntity = data.getFirst().getFirst();
+        var givenCategories = data.getFirst().getSecond();
         var expectedPayload = data.getSecond();
         //when
-        var actualPayload = sectionMapper.toPayload(givenEntity);
+        var actualPayload = sectionMapper.toPayload(givenEntity, givenCategories);
         //then
         Assertions.assertThat(actualPayload).usingRecursiveComparison()
                 .isEqualTo(expectedPayload);
@@ -110,7 +112,7 @@ public class SectionMapperTest {
         var actualEntity = sectionMapper.toEntity(givenPayload);
         //then
         Assertions.assertThat(actualEntity).usingRecursiveComparison()
-                .ignoringExpectedNullFields()
+                .ignoringActualNullFields()
                 .isEqualTo(expectedEntity);
     }
 }

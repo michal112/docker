@@ -2,7 +2,7 @@ package com.service.category.model.payload;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Set;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record SectionPayload(String publicId, String name, Set<CategoryPayload> categories) {}
+public record SectionPayload(String publicId, String name, List<CategoryPayload> categories) {}

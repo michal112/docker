@@ -1,10 +1,12 @@
 package com.service.category.model.mapper;
 
+import com.service.category.model.entity.CategoryEntity;
 import com.service.category.model.entity.SectionEntity;
 import com.service.category.model.payload.SectionPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -15,11 +17,11 @@ public class SectionMapper {
 
     private final PublicIdGenerator publicIdGenerator;
 
-    public SectionPayload toPayload(SectionEntity sectionEntity) {
+    public SectionPayload toPayload(SectionEntity sectionEntity, List<CategoryEntity> categories) {
         return new SectionPayload(sectionEntity.getPublicId(), sectionEntity.getName(),
-                sectionEntity.getCategories().stream()
+                categories.stream()
                         .map(categoryMapper::toPayload)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toList()));
     }
 
     public SectionEntity toEntity(SectionPayload sectionPayload) {

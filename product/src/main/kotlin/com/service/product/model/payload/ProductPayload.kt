@@ -1,14 +1,19 @@
 package com.service.product.model.payload
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.service.product.model.payload.converter.LocalDateDeserializer
+import com.service.product.model.payload.converter.LocalDateSerializer
 import java.time.LocalDate
-import javax.json.bind.annotation.JsonbDateFormat
 
-class ProductPayload(
-    val publicId: String,
-    val name: String,
-    val price: Int,
-    @JsonbDateFormat(value = "yyyy-MM-dd")
-    val productionDate: LocalDate,
-    @JsonbDateFormat(value = "yyyy-MM-dd")
-    val bestBefore: LocalDate,
-    val categoryPublicId:  String)
+class ProductPayload {
+
+    lateinit var publicId: String
+    lateinit var name: String
+    var price: Int = 0
+    @JsonSerialize(using = LocalDateSerializer::class)
+    @JsonDeserialize(using = LocalDateDeserializer::class)
+    lateinit var productionDate: LocalDate
+    var categoryPublicId: String? = null
+    var brand: BrandPayload? = null
+}

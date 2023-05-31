@@ -10,6 +10,6 @@ data class ProductEntity(
     var name: String,
     var price: Int,
     var productionDate: LocalDate,
-    var bestBefore: LocalDate,
-    var categoryPublicId: String
+    var categoryPublicId: String?,
+    var brandPublicId: String?
 ) : PanacheMongoEntity()

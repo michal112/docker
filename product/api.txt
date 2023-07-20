@@ -1,0 +1,167 @@
+---------------------------------------------------------------------------
+PRODUCT
+---------------------------------------------------------------------------
+
+POST [http://localhost:8080/product]
+
+input
+{
+    "name": "Telewizor Samsung QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+    "price": 2300,
+    "productionDate": "2023-04-02"
+}
+output
+{
+    "publicId": "33a78919-004e-4657-a080-0b509fae491c",
+    "name": "Telewizor Samsung QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+    "price": 2300,
+    "productionDate": {
+        "year": 2023,
+        "month": 4,
+        "day": 2
+    },
+    "categoryPublicId": null,
+    "brand": null
+}
+
+PUT [http://localhost:8080/product/33a78919-004e-4657-a080-0b509fae491c]
+
+input
+{
+    "name": "Telewizor LG QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+    "price": 2301,
+    "productionDate": "2023-04-03"
+}
+output
+{
+    "publicId": "33a78919-004e-4657-a080-0b509fae491c",
+    "name": "Telewizor LG QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+    "price": 2301,
+    "productionDate": {
+        "year": 2023,
+        "month": 4,
+        "day": 3
+    },
+    "categoryPublicId": null,
+    "brand": null
+}
+
+GET [http://localhost:8080/product/33a78919-004e-4657-a080-0b509fae491c]
+
+{
+    "publicId": "33a78919-004e-4657-a080-0b509fae491c",
+    "name": "Telewizor LG QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+    "price": 2301,
+    "productionDate": {
+        "year": 2023,
+        "month": 4,
+        "day": 3
+    },
+    "categoryPublicId": null,
+    "brand": null
+}
+
+GET [http://localhost:8080/product]
+
+[
+    {
+        "publicId": "33a78919-004e-4657-a080-0b509fae491c",
+        "name": "Telewizor LG QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+        "price": 2301,
+        "productionDate": {
+            "year": 2023,
+            "month": 4,
+            "day": 3
+        },
+        "categoryPublicId": null,
+        "brand": {
+            "publicId": "e0276ad4-8fae-4dcd-8925-1ecbf90d421f",
+            "name": "LG"
+        }
+    }
+]
+
+DELETE [http://localhost:8080/product/33a78919-004e-4657-a080-0b509fae491c]
+
+---------------------------------------------------------------------------------
+BRAND
+---------------------------------------------------------------------------------
+
+POST [http://localhost:8080/brand]
+
+input
+{
+    "name": "Samsung"
+}
+output
+{
+    "publicId": "e0276ad4-8fae-4dcd-8925-1ecbf90d421f",
+    "name": "Samsung"
+}
+
+PUT [http://localhost:8080/brand/e0276ad4-8fae-4dcd-8925-1ecbf90d421f]
+
+input
+{
+    "name": "LG"
+}
+output
+{
+    "publicId": "e0276ad4-8fae-4dcd-8925-1ecbf90d421f",
+    "name": "LG"
+}
+
+GET [http://localhost:8080/brand/e0276ad4-8fae-4dcd-8925-1ecbf90d421f]
+
+{
+    "publicId": "e0276ad4-8fae-4dcd-8925-1ecbf90d421f",
+    "name": "LG"
+}
+
+GET [http://localhost:8080/brand]
+
+[
+    {
+        "publicId": "cefa6036-c45e-437e-bcc3-ddb7e1e19c48",
+        "name": "Samsung"
+    }
+]
+
+DELETE [http://localhost:8080/brand/cefa6036-c45e-437e-bcc3-ddb7e1e19c48]
+
+------------------------------------------------------------------------
+PRODUCT <--> BRAND
+------------------------------------------------------------------------
+
+PUT [http://localhost:8080/product/33a78919-004e-4657-a080-0b509fae491c/assign/brand/e0276ad4-8fae-4dcd-8925-1ecbf90d421f]
+
+{
+    "publicId": "33a78919-004e-4657-a080-0b509fae491c",
+    "name": "Telewizor LG QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+    "price": 2301,
+    "productionDate": {
+        "year": 2023,
+        "month": 4,
+        "day": 3
+    },
+    "categoryPublicId": null,
+    "brand": {
+        "publicId": "e0276ad4-8fae-4dcd-8925-1ecbf90d421f",
+        "name": "LG"
+    }
+}
+
+PUT [http://localhost:8080/product/33a78919-004e-4657-a080-0b509fae491c/remove/brand]
+
+{
+    "publicId": "33a78919-004e-4657-a080-0b509fae491c",
+    "name": "Telewizor Samsung LG QLED QE43Q67BAU - 43\" - 4K - Smart TV",
+    "price": 2302,
+    "productionDate": {
+        "year": 2023,
+        "month": 4,
+        "day": 4
+    },
+    "categoryPublicId": null,
+    "brand": null
+}

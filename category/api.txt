@@ -1,0 +1,129 @@
+---------------------------------------------------------------------------
+CATEGORY
+---------------------------------------------------------------------------
+
+POST [http://localhost:8081/category]
+
+input
+{
+    "name":"tv"
+}
+output
+{
+    "publicId": "785b29ca-9432-4347-88c4-cf37f69fe9d6",
+    "name": "tv"
+}
+
+PUT [http://localhost:8081/category/07e8c8da-c47e-4ab5-8f21-24a9f1704da3]
+
+input
+{
+    "name":"radio"
+}
+output
+{
+    "publicId": "07e8c8da-c47e-4ab5-8f21-24a9f1704da3",
+    "name": "radio"
+}
+
+GET [http://localhost:8081/category/6b765ec6-a6ef-4af1-af90-69ea8eee9ad8]
+
+{
+    "publicId": "6b765ec6-a6ef-4af1-af90-69ea8eee9ad8",
+    "name": "pendrive"
+}
+
+GET [http://localhost:8081/category]
+
+[
+    {
+        "publicId": "6b765ec6-a6ef-4af1-af90-69ea8eee9ad8",
+        "name": "pendrive"
+    },
+    {
+        "publicId": "07e8c8da-c47e-4ab5-8f21-24a9f1704da3",
+        "name": "tv"
+    }
+]
+
+DELETE [http://localhost:8081/category/6b765ec6-a6ef-4af1-af90-69ea8eee9ad8]
+
+---------------------------------------------------------------------------------
+SECTION
+---------------------------------------------------------------------------------
+
+POST [http://localhost:8081/section]
+
+input
+{
+    "name":"electronics"
+}
+output
+{
+    "publicId": "84d747cc-47ae-4974-80a5-88f97d029601",
+    "name": "electronics",
+    "categories": []
+}
+
+PUT [http://localhost:8081/section/84d747cc-47ae-4974-80a5-88f97d029601]
+
+input
+{
+    "name":"laptop"
+}
+output
+{
+    "publicId": "84d747cc-47ae-4974-80a5-88f97d029601",
+    "name": "laptop",
+    "categories": []
+}
+
+GET [http://localhost:8081/section/e0276ad4-8fae-4dcd-8925-1ecbf90d421f]
+
+{
+    "publicId": "84d747cc-47ae-4974-80a5-88f97d029601",
+    "name": "laptop",
+    "categories": []
+}
+
+GET [http://localhost:8081/section]
+
+[
+    {
+        "publicId": "84d747cc-47ae-4974-80a5-88f97d029601",
+        "name": "laptop",
+        "categories": []
+    }
+]
+
+DELETE [http://localhost:8081/section/84d747cc-47ae-4974-80a5-88f97d029601]
+
+------------------------------------------------------------------------
+CATEGORY <--> SECTION
+------------------------------------------------------------------------
+
+PUT [http://localhost:8081/section/84d747cc-47ae-4974-80a5-88f97d029601/assign/category/07e8c8da-c47e-4ab5-8f21-24a9f1704da3]
+
+{
+    "publicId": "84d747cc-47ae-4974-80a5-88f97d029601",
+    "name": "laptop",
+    "categories": [
+        {
+            "publicId": "07e8c8da-c47e-4ab5-8f21-24a9f1704da3",
+            "name": "radio"
+        }
+    ]
+}
+
+PUT [http://localhost:8081/section/84d747cc-47ae-4974-80a5-88f97d029601/remove/category/07e8c8da-c47e-4ab5-8f21-24a9f1704da3]
+
+{
+    "publicId": "84d747cc-47ae-4974-80a5-88f97d029601",
+    "name": "laptop",
+    "categories": [
+        {
+            "publicId": "07e8c8da-c47e-4ab5-8f21-24a9f1704da3",
+            "name": "radio"
+        }
+    ]
+}

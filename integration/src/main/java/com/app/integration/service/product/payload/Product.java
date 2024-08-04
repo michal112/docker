@@ -1,7 +1,8 @@
 package com.app.integration.service.product.payload;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
 
     private String publicId;
@@ -10,11 +11,11 @@ public class Product {
 
     private Integer price;
 
-    private LocalDate productionDate;
-
-    private LocalDate bestBefore;
+    private LocalDatePayload productionDate;
 
     private String categoryPublicId;
+
+    private String sectionPublicId;
 
     //enrich
     private String categoryName;
@@ -46,20 +47,12 @@ public class Product {
         this.price = price;
     }
 
-    public LocalDate getProductionDate() {
+    public LocalDatePayload getProductionDate() {
         return productionDate;
     }
 
-    public void setProductionDate(LocalDate productionDate) {
+    public void setProductionDate(LocalDatePayload productionDate) {
         this.productionDate = productionDate;
-    }
-
-    public LocalDate getBestBefore() {
-        return bestBefore;
-    }
-
-    public void setBestBefore(LocalDate bestBefore) {
-        this.bestBefore = bestBefore;
     }
 
     public String getCategoryPublicId() {
@@ -76,5 +69,13 @@ public class Product {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getSectionPublicId() {
+        return sectionPublicId;
+    }
+
+    public void setSectionPublicId(String sectionPublicId) {
+        this.sectionPublicId = sectionPublicId;
     }
 }

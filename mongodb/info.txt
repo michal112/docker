@@ -1,0 +1,6 @@
+//docker i mongosh zainstalowane
+//1
+docker run -p 27017:27017 mongo:3-xenial
+//2 - wejsc w mongosh i załadować skrypt
+mongosh
+load("init-db.js")

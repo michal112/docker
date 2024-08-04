@@ -15,5 +15,6 @@ class ProductPayload {
     @JsonDeserialize(using = LocalDateDeserializer::class)
     lateinit var productionDate: LocalDate
     var categoryPublicId: String? = null
+    var sectionPublicId: String? = null
     var brand: BrandPayload? = null
 }

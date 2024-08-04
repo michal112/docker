@@ -12,7 +12,8 @@ fun ProductEntity.toPayload(): ProductPayload {
     payload.name = name
     payload.price = price
     payload.categoryPublicId = categoryPublicId
-    return payload;
+    payload.sectionPublicId = sectionPublicId
+    return payload
 }
 
 fun ProductEntity.toPayload(brandEntity: BrandEntity): ProductPayload {
@@ -22,6 +23,6 @@ fun ProductEntity.toPayload(brandEntity: BrandEntity): ProductPayload {
 }
 
 fun ProductPayload.toEntity(publicIdGenerator: PublicIdGenerator): ProductEntity {
-    return ProductEntity(publicIdGenerator.uuid(), name, price, productionDate, categoryPublicId, null)
+    return ProductEntity(publicIdGenerator.uuid(), name, price, productionDate, categoryPublicId, null, sectionPublicId)
 }
 

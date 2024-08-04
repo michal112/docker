@@ -1,12 +1,25 @@
+db.createCollection("section")
+db.section.insert(
+  [
+    {
+      publicId : "83dda947-a4ee-4676-b929-13b52f9e0426",
+      name : "napoje"
+    },
+    {
+      publicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba",
+      name : "jedzenie"
+    }
+  ]
+)
 db.createCollection("category")
 db.category.insert(
   [
     {
-      publicId : "83dda947-a4ee-4676-b929-13b52f9e0426",
+      publicId : "8911af58-b945-4bf2-b153-8ace71db86b2",
       name : "woda"
     },
     {
-      publicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba",
+      publicId : "23d1ca96-4b4a-4176-ab44-2f56622007ee",
       name : "ryba"
     }
   ]
@@ -20,7 +33,8 @@ db.product.insert(
       price : 1450,
       productionDate : ISODate("2019-04-12"),
       bestBefore : ISODate("2019-04-29"),
-      categoryPublicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba"
+      sectionPublicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba",
+      categoryPublicId : "23d1ca96-4b4a-4176-ab44-2f56622007ee"
     },
     {
       publicId : "22f77e87-abff-4946-a9e7-457ade8af197",
@@ -28,7 +42,8 @@ db.product.insert(
       price : 6599,
       productionDate : ISODate("2019-04-12"),
       bestBefore : ISODate("2019-04-29"),
-      categoryPublicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba"
+      sectionPublicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba",
+      categoryPublicId : "23d1ca96-4b4a-4176-ab44-2f56622007ee"
     },
     {
       publicId : "20da8e84-d189-4e63-9875-fe9855f04c39",
@@ -36,7 +51,8 @@ db.product.insert(
       price : 4399,
       productionDate : ISODate("2019-04-12"),
       bestBefore : ISODate("2019-04-29"),
-      categoryPublicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba"
+      sectionPublicId : "d557db5a-a911-4a5c-92d5-feb1293f5fba",
+      categoryPublicId : "23d1ca96-4b4a-4176-ab44-2f56622007ee"
     },
     {
       publicId : "9e1eadd1-824d-4722-af12-397dab2a9c81",
@@ -44,7 +60,8 @@ db.product.insert(
       price : 199,
       productionDate : ISODate("2019-04-12"),
       bestBefore : ISODate("2019-04-29"),
-      categoryPublicId : "83dda947-a4ee-4676-b929-13b52f9e0426"
+      sectionPublicId : "83dda947-a4ee-4676-b929-13b52f9e0426",
+      categoryPublicId : "8911af58-b945-4bf2-b153-8ace71db86b2"
     },
     {
       publicId : "8067993a-b21f-4a40-b47f-b365743f95b9",
@@ -52,7 +69,8 @@ db.product.insert(
       price : 219,
       productionDate : ISODate("2019-04-12"),
       bestBefore : ISODate("2019-04-29"),
-      categoryPublicId : "83dda947-a4ee-4676-b929-13b52f9e0426"
+      sectionPublicId : "83dda947-a4ee-4676-b929-13b52f9e0426",
+      categoryPublicId : "8911af58-b945-4bf2-b153-8ace71db86b2"
     },
     {
       publicId : "a98c5843-b9e2-448f-9c10-2c8626dcea1e",
@@ -60,7 +78,8 @@ db.product.insert(
       price : 210,
       productionDate : ISODate("2019-04-12"),
       bestBefore : ISODate("2019-04-29"),
-      categoryPublicId : "83dda947-a4ee-4676-b929-13b52f9e0426"
+      sectionPublicId : "83dda947-a4ee-4676-b929-13b52f9e0426",
+      categoryPublicId : "8911af58-b945-4bf2-b153-8ace71db86b2"
     }
   ]
 )
